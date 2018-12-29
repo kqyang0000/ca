@@ -30,7 +30,7 @@ public class ToTimer {
      * @version 1.0
      * @date 2018/12/29 17:07
      */
-    //@Scheduled(cron = "0/20 * * * * ? ")
+    @Scheduled(cron = "0/20 * * * * ? ")
     public void run() {
         /**
          * 调用存储过程，重新创建表，插入初始化数据。
