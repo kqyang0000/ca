@@ -103,6 +103,6 @@
 	</error-page>
 	<!-- 配置session超时时间，单位分钟 -->
 	<session-config>
-		<session-timeout>900</session-timeout>
+		<session-timeout>60</session-timeout>
 	</session-config>
 </web-app>
