@@ -69,10 +69,10 @@ public class SampleRealm extends AuthorizingRealm {
 
         Long userId = TokenManager.getUserId();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        //根据用户ID查询角色（role），放入到Authorization里。
+        // 根据用户ID查询角色（role），放入到Authorization里。
         Set<String> roles = roleService.findRoleByUserId(userId);
         info.setRoles(roles);
-        //根据用户ID查询权限（permission），放入到Authorization里。
+        // 根据用户ID查询权限（permission），放入到Authorization里。
         Set<String> permissions = permissionService.findPermissionByUserId(userId);
         info.setStringPermissions(permissions);
         return info;
@@ -83,17 +83,16 @@ public class SampleRealm extends AuthorizingRealm {
      */
     public void clearCachedAuthorizationInfo() {
         PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
-        SimplePrincipalCollection principals = new SimplePrincipalCollection(
-                principalCollection, getName());
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(principalCollection, getName());
         super.clearCachedAuthorizationInfo(principals);
     }
 
     /**
      * 指定principalCollection 清除
      */
+    @Override
     public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
-        SimplePrincipalCollection principals = new SimplePrincipalCollection(
-                principalCollection, getName());
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(principalCollection, getName());
         super.clearCachedAuthorizationInfo(principals);
     }
 }
