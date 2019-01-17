@@ -89,7 +89,6 @@
 	</servlet-mapping>
 
 
-
 	<welcome-file-list>
 		<welcome-file>/user/index.shtml</welcome-file>
 	</welcome-file-list>
@@ -101,6 +100,8 @@
 		<error-code>500</error-code>
 		<location>/open/404.shtml</location>
 	</error-page>
+
+
 	<!-- 配置session超时时间，单位分钟 -->
 	<session-config>
 		<session-timeout>60</session-timeout>
