@@ -25,9 +25,7 @@ public class BaseController {
     protected final static Logger logger = Logger.getLogger(BaseController.class);
     protected Map<String, Object> resultMap = new LinkedHashMap<>(16);
     public static String URL404 = "/404.html";
-
     private final static String PARAM_PAGE_NO = "pageNo";
-
     protected String pageSizeName = "pageSize";
 
     /**
@@ -99,7 +97,7 @@ public class BaseController {
     }
 
     private Map<String, Object> handleParams(Map<String, Object> params) {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>(16);
         if (null != params) {
             Set<Entry<String, Object>> entrySet = params.entrySet();
 
