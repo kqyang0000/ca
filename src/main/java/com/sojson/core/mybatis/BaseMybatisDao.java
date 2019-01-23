@@ -1,5 +1,16 @@
 package com.sojson.core.mybatis;
 
+import com.sojson.common.utils.LoggerUtils;
+import com.sojson.common.utils.StringUtils;
+import com.sojson.core.mybatis.page.MysqlDialect;
+import com.sojson.core.mybatis.page.Pagination;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.session.Configuration;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
+
 import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,18 +19,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.session.Configuration;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
-
-import com.sojson.common.utils.LoggerUtils;
-import com.sojson.common.utils.StringUtils;
-import com.sojson.core.mybatis.page.MysqlDialect;
-import com.sojson.core.mybatis.page.Pagination;
 
 @SuppressWarnings({"unchecked"})
 public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
@@ -59,8 +58,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
      * @param pageSize size
      * @return
      */
-    public Pagination findByPageBySqlId(String sqlId,
-                                        Map<String, Object> params, Integer pageNo, Integer pageSize) {
+    public Pagination findByPageBySqlId(String sqlId, Map<String, Object> params, Integer pageNo, Integer pageSize) {
 
         pageNo = null == pageNo ? 1 : pageNo;
         pageSize = null == pageSize ? 10 : pageSize;
@@ -74,7 +72,6 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
         int offset = (page.getPageNo() - 1) * page.getPageSize();
         String page_sql = String.format(" limit %s , %s", offset, pageSize);
         params.put("page_sql", page_sql);
-
 
         BoundSql boundSql = c.getMappedStatement(sqlId).getBoundSql(params);
         String sqlcode = boundSql.getSql();
@@ -93,7 +90,8 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
 
             Map<String, Object> countMap = new HashMap<String, Object>();
             countMap.putAll(params);
-            countMap.remove("page_sql");//去掉，分页的参数。
+            // 去掉，分页的参数。
+            countMap.remove("page_sql");
             countSql = c.getMappedStatement(countId).getBoundSql(countMap);
             countCode = countSql.getSql();
         }
@@ -125,8 +123,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
      * @param pageSize size
      * @return
      */
-    public List findList(String sqlId, Map<String, Object> params,
-                         Integer pageNo, Integer pageSize) {
+    public List findList(String sqlId, Map<String, Object> params, Integer pageNo, Integer pageSize) {
         pageNo = null == pageNo ? 1 : pageNo;
         pageSize = null == pageSize ? 10 : pageSize;
 
@@ -148,8 +145,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
      * @param requiredType 返回的类型[可以不传参]
      * @return
      */
-    public List findList(Map<String, Object> params, Integer pageNo,
-                         Integer pageSize) {
+    public List findList(Map<String, Object> params, Integer pageNo, Integer pageSize) {
         return findList(DEFAULT_SQL_ID, params, pageNo, pageSize);
     }
 
@@ -164,8 +160,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
      * @param requiredType    返回的类型[可以不传参]
      * @return
      */
-    public Pagination findPage(String sqlId, String countId,
-                               Map<String, Object> params, Integer pageNo, Integer pageSize) {
+    public Pagination findPage(String sqlId, String countId, Map<String, Object> params, Integer pageNo, Integer pageSize) {
         pageNo = null == pageNo ? 1 : pageNo;
         pageSize = null == pageSize ? 10 : pageSize;
         Pagination page = new Pagination();
@@ -193,16 +188,12 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
         }
         try {
             Connection conn = this.getSqlSession().getConnection();
-
             List resultList = this.getSqlSession().selectList(sqlId, params);
-
             page.setList(resultList);
-
             /**
              * 处理Count
              */
-            PreparedStatement ps = getPreparedStatement4Count(countCode, countSql
-                    .getParameterMappings(), params, conn);
+            PreparedStatement ps = getPreparedStatement4Count(countCode, countSql.getParameterMappings(), params, conn);
             ps.execute();
             ResultSet set = ps.getResultSet();
 
@@ -224,9 +215,7 @@ public class BaseMybatisDao<T> extends SqlSessionDaoSupport {
      * @param pageSize
      * @return
      */
-    public Pagination findPage(Map<String, Object> params, Integer pageNo,
-                               Integer pageSize) {
-
+    public Pagination findPage(Map<String, Object> params, Integer pageNo, Integer pageSize) {
         return findPage(DEFAULT_SQL_ID, DEFAULT_COUNT_SQL_ID, params, pageNo, pageSize);
     }
 

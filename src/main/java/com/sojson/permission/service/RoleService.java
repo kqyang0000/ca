@@ -1,16 +1,16 @@
 package com.sojson.permission.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.sojson.common.model.URole;
 import com.sojson.core.mybatis.page.Pagination;
 import com.sojson.permission.bo.RolePermissionAllocationBo;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public interface RoleService {
 
-	int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(URole record);
 
@@ -22,17 +22,19 @@ public interface RoleService {
 
     int updateByPrimaryKey(URole record);
 
-	Pagination<URole> findPage(Map<String, Object> resultMap, Integer pageNo,
-			Integer pageSize);
+    Pagination<URole> findPage(Map<String, Object> resultMap, Integer pageNo,
+                               Integer pageSize);
 
-	Map<String, Object> deleteRoleById(String ids);
+    Map<String, Object> deleteRoleById(String ids);
 
-	Pagination<RolePermissionAllocationBo> findRoleAndPermissionPage(
-			Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
-	//根据用户ID查询角色（role），放入到Authorization里。
-	Set<String> findRoleByUserId(Long userId);
+    Pagination<RolePermissionAllocationBo> findRoleAndPermissionPage(
+            Map<String, Object> resultMap, Integer pageNo, Integer pageSize);
 
-	List<URole> findNowAllPermission();
-	//初始化数据
-	void initData();
+    //根据用户ID查询角色（role），放入到Authorization里。
+    Set<String> findRoleByUserId(Long userId);
+
+    List<URole> findNowAllPermission();
+
+    //初始化数据
+    void initData();
 }
