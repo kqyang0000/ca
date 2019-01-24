@@ -69,21 +69,23 @@ public class CommonController extends BaseController {
             view.addObject("methodName", defaultMessage);
             return view;
         }
-        String message = t.getMessage();//错误信息
+        // 错误信息
+        String message = t.getMessage();
         StackTraceElement[] stack = t.getStackTrace();
         view.addObject("message", message);
         if (null != stack && stack.length != 0) {
             StackTraceElement element = stack[0];
-            int line = element.getLineNumber();//错误行号
-            String clazz = element.getClassName();//错误java类
+            // 错误行号
+            int line = element.getLineNumber();
+            // 错误java类
+            String clazz = element.getClassName();
             String fileName = element.getFileName();
-
-            String methodName = element.getMethodName();//错误方法
+            // 错误方法
+            String methodName = element.getMethodName();
             view.addObject("line", line);
             view.addObject("clazz", clazz);
             view.addObject("methodName", methodName);
-            LoggerUtils.fmtError(getClass(), "line:%s,clazz:%s,fileName:%s,methodName:%s()",
-                    line, clazz, fileName, methodName);
+            LoggerUtils.fmtError(getClass(), "line:%s,clazz:%s,fileName:%s,methodName:%s()", line, clazz, fileName, methodName);
         }
         return view;
     }
@@ -101,11 +103,11 @@ public class CommonController extends BaseController {
             response.setDateHeader("Expires", 0);
             response.setContentType("image/jpg");
 
-            //生成随机字串
+            // 生成随机字串
             String verifyCode = VerifyCodeUtils.generateVerifyCode(4);
-            //存入Shiro会话session
+            // 存入Shiro会话session
             TokenManager.setVal2Session(VerifyCodeUtils.V_CODE, verifyCode.toLowerCase());
-            //生成图片
+            // 生成图片
             int w = 146, h = 33;
             VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
         } catch (Exception e) {
@@ -130,11 +132,11 @@ public class CommonController extends BaseController {
              * 宽，高，位数。
              */
             Captcha captcha = new GifCaptcha(146, 42, 4);
-            //输出
+            // 输出
             ServletOutputStream out = response.getOutputStream();
             captcha.out(out);
             out.flush();
-            //存入Shiro会话session
+            // 存入Shiro会话session
             System.out.println(captcha.text().toLowerCase());
             TokenManager.setVal2Session(VerifyCodeUtils.V_CODE, captcha.text().toLowerCase());
         } catch (Exception e) {
