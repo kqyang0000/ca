@@ -55,7 +55,8 @@
     </bean>
 
     <!-- 会话验证调度器 -->
-    <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
         <!-- 间隔多少时间检查，不配置是60分钟 -->
         <property name="interval" value="${session.validate.timespan}"/>
         <property name="sessionManager" ref="sessionManager"/>
@@ -91,7 +92,8 @@
     </bean>
     <!-- 静态注入 jedisShiroSessionRepository-->
     <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="com.sojson.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/>
+        <property name="staticMethod"
+                  value="com.sojson.core.shiro.filter.KickoutSessionFilter.setShiroSessionRepository"/>
         <property name="arguments" ref="jedisShiroSessionRepository"/>
     </bean>
 
