@@ -103,9 +103,10 @@ public class KickoutSessionFilter extends AccessControlFilter {
             Serializable oldSessionId = infoMap.get(userId);
             Session oldSession = shiroSessionRepository.getSession(oldSessionId);
             if (null != oldSession) {
-                //标记session已经踢出
+                // 标记session已经踢出
                 oldSession.setAttribute(KICKOUT_STATUS, Boolean.TRUE);
-                shiroSessionRepository.saveSession(oldSession);//更新session
+                // 更新session
+                shiroSessionRepository.saveSession(oldSession);
                 LoggerUtils.fmtDebug(getClass(), "kickout old session success,oldId[%s]", oldSessionId);
             } else {
                 shiroSessionRepository.deleteSession(oldSessionId);
@@ -150,8 +151,7 @@ public class KickoutSessionFilter extends AccessControlFilter {
         }
     }
 
-    public static void setShiroSessionRepository(
-            ShiroSessionRepository shiroSessionRepository) {
+    public static void setShiroSessionRepository(ShiroSessionRepository shiroSessionRepository) {
         KickoutSessionFilter.shiroSessionRepository = shiroSessionRepository;
     }
 

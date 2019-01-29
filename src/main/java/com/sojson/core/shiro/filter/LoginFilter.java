@@ -12,6 +12,20 @@ import java.util.Map;
 
 /**
  * <p>判断登录</p>
+ * <p>
+ * <p>
+ *     这个类才是限制应用中的资源能否被访问的filter，我们先看的onPreHandle方法：<br/>
+ *     publicboolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
+ *       return isAccessAllowed(request, response, mappedValue) || onAccessDenied(request, response, mappedValue);
+ *     }
+ *     可以发现他是调用的isAccessAllowed方法和onAccessDenied方法，只要两者有一个可以就可以了，从名字中我们也可以理解，他的逻辑是这样：
+ *     先调用isAccessAllowed，如果返回的是true，则直接放行执行后面的filter和servlet，如果返回的是false，则继续执行后面的onAccessDenied方法，
+ *     如果后面返回的是true则也可以有权限继续执行后面的filter和servelt。
+ *     只有两个函数都返回false才会阻止后面的filter和servlet的执行。
+ *     isAccessAllowed方法在这个类中都是抽象的，依靠实现类实现。onAccessDenied方法不是抽象的，但是调用了另一个抽象的方法：
+ *     org.apache.shiro.web.filter.AccessControlFilter.onAccessDenied(ServletRequest, ServletResponse)
+ *     这个方法忽略了之前配置的param参数。
+ * </p>
  *
  * @author kqyang
  * @version 1.0
@@ -44,6 +58,7 @@ public class LoginFilter extends AccessControlFilter {
             throws Exception {
         // 保存Request和Response 到登录后的链接
         saveRequestAndRedirectToLogin(request, response);
+
         return Boolean.FALSE;
     }
 }

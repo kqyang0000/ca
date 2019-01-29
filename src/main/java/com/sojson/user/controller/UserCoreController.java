@@ -40,7 +40,10 @@ public class UserCoreController extends BaseController {
      */
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView userIndex() {
-
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println("用户访问.................");
         return new ModelAndView("user/index");
     }
 
